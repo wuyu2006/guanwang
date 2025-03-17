@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>暖居慧选官方网站</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
+  <link rel="icon" href="image/logo/favicon.ico" type="image/x-icon">
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #FAD6A5; /* 杏色 */
+      color: #333;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    /* Container 居中 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    /* 导航栏 */
+    nav {
+      background-color: #90EE90; /* 浅绿色 */
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-menu a[href="#"] {
+      font-weight: bold;
+      color: #333;
+      padding: 5px 10px;
+    }
+    .nav-menu a[href="#"]:hover {
+      background-color: #76c376;
+      border-radius: 4px;
+    }
+    .menu-btn {
+      display: none;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    /* 轮播图 */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin-top: 0; /* 默认无额外上边距 */
+    }
+    .carousel-inner {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .carousel-slide {
+      flex: 0 0 100%;
+      position: relative;
+    }
+    .carousel-slide img {
+      width: calc(100% - 20px); /* 左右各留10px */
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      object-fit: contain; /* 保证图片全部显示 */
+    }
+    .carousel .prev, .carousel .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.5);
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+      border: none;
+    }
+    .carousel .prev { left: 10px; }
+    .carousel .next { right: 10px; }
+    /* 精选产品 */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 30px 0;
+    }
+    .section-header h2 {
+      font-size: 28px;
+      color: #333;
+    }
+    .see-more {
+      background-color: #90EE90; /* 浅绿色 */
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .see-more:hover {
+      background-color: #76c376;
+    }
+    /* 产品展示区域 */
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .product-item {
+      flex: 1 1 calc(25% - 20px);
+      max-width: 300px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-item:hover {
+      transform: translateY(-5px);
+    }
+    .product-item img {
+      width: calc(100% - 20px); /* 限制左右边距 */
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      object-fit: contain; /* 完全显示图片内容 */
+    }
+    .product-info {
+      padding: 15px;
+      flex-grow: 1;
+    }
+    .product-info h3 {
+      margin-bottom: 10px;
+    }
+    .product-info p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+    .product-info .detail-btn {
+      background-color: #90EE90;
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+    }
+    .product-info .detail-btn:hover {
+      background-color: #76c376;
+    }
+    /* 品牌故事 */
+    .brand-story {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin: 40px 0;
+    }
+    .brand-story h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+    .brand-story p {
+      font-size: 16px;
+      color: #666;
+    }
+    /* 常见问题部分 */
+    .faq {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin: 40px 0;
+    }
+    .faq h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+    .faq p {
+      font-size: 16px;
+      color: #666;
+    }
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .nav-menu {
+         display: none;
+         flex-direction: column;
+         position: absolute;
+         top: 60px;
+         right: 20px;
+         background-color: #90EE90;
+         padding: 10px;
+         border-radius: 4px;
+         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      }
+      .nav-menu.active {
+         display: flex;
+      }
+      .menu-btn {
+         display: block;
+      }
+      .product-item { flex: 1 1 calc(50% - 20px); }
+      .section-header { flex-direction: column; align-items: flex-start; }
+      .see-more { margin-top: 10px; }
+      .see-more {
+        display: block;
+        margin-top: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      .product-item { flex: 1 1 100%; }
+    }
+    /* 横竖屏判断，若为竖屏手机则启用折叠菜单 */
+    @media (orientation: portrait) and (min-width: 320px) and (max-width: 768px) {
+      .see-more {
+        margin-top: 20px;
+      }
+    }
+    /* 横屏模式下 */
+    @media (orientation: landscape) {
+      .carousel-slide img {
+        object-fit: contain;
+      }
+    }
+    /* 针对竖屏模式下轮播图调整 */
+    @media (orientation: portrait) {
+      .carousel {
+        margin-top: 90px; /* 增大上边距，确保轮播图不被导航栏遮挡 */
+      }
+      .carousel-slide img {
+        width: 100%;
+        padding: 0 10px;
+        margin: 0 auto;
+        object-fit: contain;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav>
+    <div class="logo">暖居慧选</div>
+    <div class="nav-menu">
+      <a href="index.html">首页</a>
+      <a href="#brand-story">品牌故事</a>
+      <a href="https://mobile.yangkeduo.com/mall_page.html?mall_id=812794436&msn=sqsueoty6j6khw5tk4yxf6c5b4_axbuy&_sop_rcto=YWL0SyNjSwz4GNV1qjC4GAqzY25dIPRcnbA&mall_info=%7B%22mall_name%22%3A%22%E6%9A%96%E5%B1%85%E6%85%A7%E9%80%89%22%7D&goods_id=718165066610&refer_page_el_sn=96515&refer_page_name=goods_detail&refer_page_id=10014_1742190798041_x9emrx448o&refer_page_sn=10014">进入店铺</a>
+    </div>
+    <div class="menu-btn" onclick="toggleMenu()">&#9776;</div>
+  </nav>
+
+  <!-- 轮播图 -->
+  <div class="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-slide">
+        <a href="https://mobile.yangkeduo.com/mall_page.html?mall_id=812794436&msn=sqsueoty6j6khw5tk4yxf6c5b4_axbuy&_sop_rcto=YWL0SyNjSwz4GNV1qjC4GAqzY25dIPRcnbA&mall_info=%7B%22mall_name%22%3A%22%E6%9A%96%E5%B1%85%E6%85%A7%E9%80%89%22%7D&goods_id=718165066610&refer_page_el_sn=96515&refer_page_name=goods_detail&refer_page_id=10014_1742190798041_x9emrx448o&refer_page_sn=10014">
+          <img src="image/zhuye/zy1.png" alt="轮播图1">
+        </a>
+      </div>
+      <div class="carousel-slide">
+        <a href="https://mobile.yangkeduo.com/mall_page.html?mall_id=812794436&msn=sqsueoty6j6khw5tk4yxf6c5b4_axbuy&_sop_rcto=YWL0SyNjSwz4GNV1qjC4GAqzY25dIPRcnbA&mall_info=%7B%22mall_name%22%3A%22%E6%9A%96%E5%B1%85%E6%85%A7%E9%80%89%22%7D&goods_id=718165066610&refer_page_el_sn=96515&refer_page_name=goods_detail&refer_page_id=10014_1742190798041_x9emrx448o&refer_page_sn=10014">
+          <img src="image/zhuye/zy1.png" alt="轮播图2">
+        </a>
+      </div>
+      <div class="carousel-slide">
+        <a href="https://mobile.yangkeduo.com/mall_page.html?mall_id=812794436&msn=sqsueoty6j6khw5tk4yxf6c5b4_axbuy&_sop_rcto=YWL0SyNjSwz4GNV1qjC4GAqzY25dIPRcnbA&mall_info=%7B%22mall_name%22%3A%22%E6%9A%96%E5%B1%85%E6%85%A7%E9%80%89%22%7D&goods_id=718165066610&refer_page_el_sn=96515&refer_page_name=goods_detail&refer_page_id=10014_1742190798041_x9emrx448o&refer_page_sn=10014">
+          <img src="image/zhuye/zy1.png" alt="轮播图3">
+        </a>
+      </div>
+    </div>
+    <button class="prev" onclick="prevSlide()">&#10094;</button>
+    <button class="next" onclick="nextSlide()">&#10095;</button>
+  </div>
+
+  <div class="container">
+    <!-- 精选产品标题及查看更多按钮 -->
+    <div class="section-header">
+      <h2>精选产品</h2>
+      <a href="https://mobile.yangkeduo.com/mall_page.html?mall_id=812794436&msn=sqsueoty6j6khw5tk4yxf6c5b4_axbuy&_sop_rcto=YWL0SyNjSwz4GNV1qjC4GAqzY25dIPRcnbA&mall_info=%7B%22mall_name%22%3A%22%E6%9A%96%E5%B1%85%E6%85%A7%E9%80%89%22%7D&goods_id=718165066610&refer_page_el_sn=96515&refer_page_name=goods_detail&refer_page_id=10014_1742190798041_x9emrx448o&refer_page_sn=10014" class="see-more">查看更多</a>
+    </div>
+
+    <!-- 产品展示区域 (只显示2个产品示例) -->
+    <div class="product-grid">
+      <div class="product-item">
+        <img src="image/chanping/c1.jpg" alt="云朵抱枕/靠枕">
+        <div class="product-info">
+          <h3>云朵抱枕/靠枕</h3>
+          <p>治愈系云朵沙发抱枕ins风床头靠垫护腰午睡趴枕家居客厅萌趣腰枕</p>
+          <a href="product1.html" class="detail-btn">查看详情</a>
+        </div>
+      </div>
+      <div class="product-item">
+        <img src="image/chanping/c2.jpg" alt="恐龙抱枕/靠枕">
+        <div class="product-info">
+          <h3>恐龙抱枕/靠枕</h3>
+          <p>生日礼物毛绒恐龙卡通靠垫抱枕车载办公室两用萌趣可爱治愈靠背枕</p>
+          <a href="product2.html" class="detail-btn">查看详情</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 品牌故事 -->
+    <div class="brand-story" id="brand-story">
+      <h2>店铺故事</h2>
+      <p>
+        2025 年 2 月，在广州三元里的出租屋里，我用大学时的奖学金启动了这家拼多多小店。起因是发现市场上的毛绒抱枕要么华而不实，要么材质模糊，而我自己因颈椎问题试遍了市面上 37 种枕头。
+        作为一件代发的新手卖家，我跑遍中大布料市场，与 8 家工厂打样 21 次，最终选定母婴级牛奶绒面料。为测试填充物回弹性，我每天下班后在样品间暴力按压 300 次，直到找到记忆棉与羽丝绒的黄金配比。
+        上线首月靠 "9.9 元试睡装" 吸引流量，却因物流问题收到 3 条差评。我连夜联系快递公司升级为顺丰特惠，自掏腰包承担多出的 12 元运费，换来客户惊喜留言："没想到拼多多也能买到这么舒服的枕头"。的承诺背后，都是无数次对细节的执着与坚持。这大概就是暖居慧选存在的意义 —— 在钢筋水泥的城市里，为每个疲惫的灵魂留一处云端般的栖息之地。
+      </p>
+    </div>
+
+    <!-- 常见问题部分 -->
+    <div class="faq">
+      <h2>常见问题</h2>
+      <div class="faq-item">
+        <h3>Q：默认发什么快递？</h3>
+        <p>这边会选择合适的快递发货的，具体以订单发货快递为准</p>
+        <h3>Q：支持7天无理由退换吗？</h3>
+        <p>支持！未拆封使用的商品可享受7天无理由退换，质量问题免费退换并承担运费。收到货后若有任何不满意，请随时联系客服</p>
+    </div>
+  </div>
+
+  <script>
+    // 轮播图功能
+    let slideIndex = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const totalSlides = slides.length;
+    const carouselInner = document.querySelector('.carousel-inner');
+
+    function showSlide(index) {
+      if (index >= totalSlides) { slideIndex = 0; }
+      if (index < 0) { slideIndex = totalSlides - 1; }
+      carouselInner.style.transform = 'translateX(' + (-slideIndex * 100) + '%)';
+    }
+
+    function nextSlide() {
+      slideIndex++;
+      showSlide(slideIndex);
+    }
+
+    function prevSlide() {
+      slideIndex--;
+      showSlide(slideIndex);
+    }
+
+    // 自动播放
+    setInterval(function() {
+      slideIndex++;
+      showSlide(slideIndex);
+    }, 5000);
+
+    // 导航菜单折叠菜单功能（仅在竖屏下有效）
+    function toggleMenu() {
+      const menu = document.querySelector('.nav-menu');
+      menu.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
